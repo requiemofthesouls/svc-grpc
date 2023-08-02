@@ -9,9 +9,6 @@ grpcServers:
   - name: public
     address: ":3017"
     middlewares:
-      auth:
-        noAuthHandlers:
-          - 'bonus50.GRPCPublic/GetInfo'
       logging:
         loggedFields:
           OpenAccount:
