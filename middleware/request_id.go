@@ -8,9 +8,7 @@ import (
 	"github.com/requiemofthesouls/logger"
 	client "github.com/requiemofthesouls/user-client"
 	"google.golang.org/grpc"
-	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/metadata"
-	"google.golang.org/grpc/status"
 )
 
 func UnaryRequestIDBuilder(skipFor map[string]struct{}, l logger.Wrapper) grpc.UnaryServerInterceptor {
@@ -60,7 +58,7 @@ func extractRequestIDFromMD(ctx context.Context, l logger.Wrapper) (context.Cont
 	if requestID == "" {
 		errMsg := "requestID is not sent or empty"
 		l.Warn(errMsg)
-		return ctx, status.Error(codes.InvalidArgument, errMsg)
+		// return ctx, status.Error(codes.InvalidArgument, errMsg)
 	}
 
 	return client.RequestIDToContext(ctx, requestID), nil
