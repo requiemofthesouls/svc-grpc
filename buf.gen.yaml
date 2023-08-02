@@ -1,0 +1,14 @@
+version: v1
+managed:
+  enabled: true
+  go_package_prefix:
+    default: github.com/requiemofthesouls/svc-grpc/pb
+plugins:
+  - plugin: buf.build/protocolbuffers/go
+    out: pb
+    opt: paths=source_relative
+  - remote: buf.build/library/plugins/go-grpc
+    out: pb
+    opt:
+      - paths=source_relative
+
