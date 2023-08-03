@@ -31,6 +31,14 @@ type (
 	}
 )
 
+type eventSourceMarshaler struct {
+	runtime.JSONPb
+}
+
+func (m *eventSourceMarshaler) ContentType(_ interface{}) string {
+	return "text/event-stream"
+}
+
 func NewHTTPGatewayServer(
 	cfg HTTPConfig,
 	name, grpcAddress string,
@@ -65,6 +73,20 @@ func createHttpHandler(addr string, registrants []GatewayRegistrant, errorHandle
 				UnmarshalOptions: protojson.UnmarshalOptions{
 					DiscardUnknown: true,
 				}},
+		),
+		runtime.WithMarshalerOption(
+			"text/event-stream",
+			&eventSourceMarshaler{
+				runtime.JSONPb{
+					MarshalOptions: protojson.MarshalOptions{
+						UseProtoNames:   true,
+						EmitUnpopulated: true,
+					},
+					UnmarshalOptions: protojson.UnmarshalOptions{
+						DiscardUnknown: true,
+					},
+				},
+			},
 		),
 		runtime.WithIncomingHeaderMatcher(func(key string) (string, bool) {
 			switch {
