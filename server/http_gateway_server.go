@@ -8,7 +8,6 @@ import (
 
 	"github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
 	"github.com/requiemofthesouls/logger"
-	"github.com/requiemofthesouls/svc-grpc/marshalers"
 	httpServer "github.com/requiemofthesouls/svc-http/server"
 	userclient "github.com/requiemofthesouls/user-client"
 	"google.golang.org/grpc"
@@ -66,10 +65,6 @@ func createHttpHandler(addr string, registrants []GatewayRegistrant, errorHandle
 				UnmarshalOptions: protojson.UnmarshalOptions{
 					DiscardUnknown: true,
 				}},
-		),
-		runtime.WithMarshalerOption(
-			marshalers.MIMETextEventStream,
-			&marshalers.JSONPb{},
 		),
 		runtime.WithIncomingHeaderMatcher(func(key string) (string, bool) {
 			switch {
